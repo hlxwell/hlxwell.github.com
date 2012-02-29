@@ -1,3 +1,8 @@
+# markdown: rdiscount
+# lsi: true
+
+paginate: 5
+
 # This is the default format.
 # For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
 permalink: /:categories/:year/:month/:day/:title
@@ -10,7 +15,7 @@ pygments: true
 # so be sure to set them if your theme uses them.
 #
 title : Michael He's Blog
-tagline: Site Tagline
+tagline: Rails, Ruby, iOS, Linux, EventMachine, Javascript
 author :
   name : Michael He
   email : hlxwell@gmail.com
@@ -82,15 +87,15 @@ JB :
     provider : disqus
     disqus :
       short_name : hlxwell
-    # livefyre :
-    #   site_id : 1234
-    # intensedebate :
-    #   account : hlxwell
-    # facebook :
-    #   appid : 123
-    #   num_posts: 5
-    #   width: 580
-    #   colorscheme: light
+    livefyre :
+      site_id : 1234
+    intensedebate :
+      account : hlxwell
+    facebook :
+      appid : 123
+      num_posts: 5
+      width: 580
+      colorscheme: light
 
   # Settings for analytics helper
   # Set 'provider' to the analytics provider you want to use.
@@ -98,6 +103,8 @@ JB :
   #
   analytics :
     provider : 51la
+    51la:
+      tracking_id : 1051052
     google :
       tracking_id : 'UA-29579277-1'
 
