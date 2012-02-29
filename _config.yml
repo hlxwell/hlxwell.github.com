@@ -1,6 +1,6 @@
-# markdown: rdiscount
-# lsi: true
-# paginate: 5
+markdown: rdiscount
+paginate: 5
+lsi: true
 
 # This is the default format.
 # For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
@@ -101,9 +101,7 @@ JB :
   # Set 'provider' to false to turn analytics off globally.
   #
   analytics :
-    provider : 51la
-    51la:
-      tracking_id : 1051052
+    provider : google
     google :
       tracking_id : 'UA-29579277-1'
 

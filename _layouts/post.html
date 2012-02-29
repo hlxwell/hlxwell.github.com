@@ -4,14 +4,18 @@ layout: default
 {% include JB/setup %}
 {% include themes/the-minimum/post.html %}
 
-<script type="text/javascript" src="/js/jquery.min.js"/>
-<script type="text/javascript" src="/js/jquery.snippet.min.js" />
-<link rel="stylesheet" href="/css/jquery.snippet.min.css" type="text/css" media="screen" charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/jquery.snippet.min.js"></script>
+<link rel="stylesheet" href="/css/jquery.snippet.min.css" type="text/css" media="screen" charset="utf-8"></link>
 
 <script type="text/javascript" charset="utf-8">
   $(function(){
     $("pre.htmlCode").snippet("html");
     $("pre.styles").snippet("css",{style:"greenlcd"});
-    $("pre.js").snippet("javascript",{style:"random",transparent:true,showNum:false});
+    $("pre.js").snippet("javascript", {
+      style:"random",
+      transparent:true,
+      showNum:true
+    });
   });
 </script>
