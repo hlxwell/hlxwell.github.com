@@ -2,7 +2,7 @@
 layout: post
 title: EventMachine VS Node.js performance
 tags: 
-- Node.js
+- node.js
 - EventMachine
 status: publish
 type: post

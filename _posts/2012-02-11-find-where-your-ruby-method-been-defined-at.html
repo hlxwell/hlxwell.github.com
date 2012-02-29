@@ -7,7 +7,9 @@ status: publish
 type: post
 published: true
 ---
-1.9.2p290 :003 &gt; User.method(:all).<strong>source_location</strong>
-=&gt; ["/Users/michaelhe/.rvm/gems/ruby-1.9.2-p290/gems/activerecord-3.0.11/lib/active_record/base.rb", 443]
+{% highlight ruby %}
+1.9.2p290 :003 > User.method(:all).source_location
+=> ["/Users/michaelhe/.rvm/gems/ruby-1.9.2-p290/gems/activerecord-3.0.11/lib/active_record/base.rb", 443]
+{% endhighlight %}
 
 It's also support ruby 1.8.7

@@ -8,8 +8,8 @@ type: post
 published: true
 ---
 Recently I got a error from my project, which reported by hoptoad, the error information like:
-<blockquote>I18n::MissingInterpolationArgument: missing interpolation argument in "I ran %{distance}km on %{date}. It took %{time}" ({:pace=&gt;"&lt;input class=\"pace_field normalC\" id=\"dashboardPace\" name=\"run[pace]\" size=\"6\" type=\"text\" /&gt;"} given)</blockquote>
-You will find I was passing the data <strong> {:pace=&gt;"..."} </strong> to the translation key: <strong>"I ran %{distance}km on %{date}. It took %{time}"</strong>.  this translation key required 3 parameters, but I only given one. And when I look into the code, I found there is no such a mistake as I mentioned above. Then I gave up to fix this problem.
+<blockquote>I18n::MissingInterpolationArgument: missing interpolation argument in "I ran %{distance}km on %{date}. It took %{time}" ({:pace=>"..."} given)</blockquote>
+You will find I was passing the data <strong> {:pace=>"..."} </strong> to the translation key: <strong>"I ran %{distance}km on %{date}. It took %{time}"</strong>.  this translation key required 3 parameters, but I only given one. And when I look into the code, I found there is no such a mistake as I mentioned above. Then I gave up to fix this problem.
 
 Couple of weeks past, one day, when I was driving back from shanghai to hangzhou, I overheard my colleagues was discussing about this issue, they found this problem is referred to some multi-process issue. Thereafter, I did a more deeper investigation, then finally found the reason and knew how to recur it.
 <h3>How to recur it?</h3>

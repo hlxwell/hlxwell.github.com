@@ -6,22 +6,13 @@ title: "Home"
 
 {% for post in paginator.posts %}
   <div class="full">
-    <h1 class="entry-title">
+    <h2 class="entry-title">
       <a href="{{ post.url }}" title="{{ post.title }}" rel="bookmark">{{ post.title }}</a>
-    </h1>
+    </h2>
     <div class="entry-content full-content">
       {{ post.content }}
       <div class="clear"></div>
     </div>
-    <p class="alt-font tight">
-      Posted in&nbsp;
-      {% for category in post.categories %}
-      <a href="/categories/{{ category }}" title="{{ category }}" rel="category tag">{{ category }}</a>
-      {% endfor %}
-    </p>
-    <p class="comments-link">
-      <a href='{{post.url}}#disqus_thread'>Comments</a>
-    </p>
     <p class="by-line">
       <span class="date full-date">
         <abbr class="published" title="{{ post.date }}">{{ post.date | date_to_string }}</abbr>
