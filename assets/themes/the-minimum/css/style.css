@@ -6,9 +6,9 @@
 
 @import "helper.css";
 /*
-Frameless			<http://framelessgrid.com/>
-by Joni Korpi 		<http://jonikorpi.com/>
-licensed under CC0	<http://creativecommons.org/publicdomain/zero/1.0/>
+Frameless      <http://framelessgrid.com/>
+by Joni Korpi     <http://jonikorpi.com/>
+licensed under CC0  <http://creativecommons.org/publicdomain/zero/1.0/>
 
 No styleguide reference.
 */
@@ -31,16 +31,16 @@ body {
 /*
 Font size setting
 Using Golden ratio section (Caliculated via http://j.mp/sB6oxM):
-109.657	6.854	843.515 * h1
-82.241	5.14	632.623
-67.773	4.236	521.331
-50.829	3.177	390.992
-41.887	2.618	322.208 * h2
-31.415	1.963	241.654
-25.888	1.618	199.138 * h3
-19.416	1.214	149.354 * h4
-16.000	1	    123.077 * Base font size
-12.000	0.75	92.308  * Minimum font size
+109.657  6.854  843.515 * h1
+82.241  5.14  632.623
+67.773  4.236  521.331
+50.829  3.177  390.992
+41.887  2.618  322.208 * h2
+31.415  1.963  241.654
+25.888  1.618  199.138 * h3
+19.416  1.214  149.354 * h4
+16.000  1      123.077 * Base font size
+12.000  0.75  92.308  * Minimum font size
 Vertical Rhythm is caluculated via http://j.mp/sUvKuN
 
 No styleguide reference.
@@ -573,7 +573,7 @@ pre {
   margin-right: auto;
 }
 /*
- 	IE
+   IE
 */
 .ie .the-header .unit-inner {
   width: 60em;
@@ -654,7 +654,7 @@ pre {
   margin-right: auto;
 }
 /*
-	Smartphone
+  Smartphone
 */
 @media only screen and (min-width: 320px) and (max-width: 767px) {
   img {
@@ -662,7 +662,7 @@ pre {
   }
 }
 /*
-	Wide Smartphone
+  Wide Smartphone
 */
 @media only screen and (min-width: 480px) {
   .the-header .unit-inner {
@@ -718,7 +718,7 @@ pre {
   }
 }
 /*
-	Tablet
+  Tablet
 */
 @media only screen and (min-width: 768px) {
   .the-header .unit-inner {
@@ -753,7 +753,7 @@ pre {
   }
 }
 /*
-	Not that old computer layout 
+  Not that old computer layout 
 */
 @media only screen and (min-width: 1280px) {
   .the-header .unit-inner {
@@ -799,7 +799,7 @@ pre {
   }
 }
 /*
-	Huge-screen layout 
+  Huge-screen layout 
 */
 @media only screen and (min-width: 1410px) {
   .the-header .unit-inner {

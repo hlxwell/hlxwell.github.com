@@ -24,9 +24,9 @@ so Mime::Type.parse("text/*") will return correct result.
 
 Solution to solve this issue is:
 <ol>
-	<li>Let Mime::Type.parse *<em>/*</em>, like Mime["text/*"] =&gt; text/html, text/json, text/xml</li>
-	<li>Find exist template which match to the mime type list.</li>
-	<li>If find the template, render it, or else, raise "MissingTemplate" error.</li>
+  <li>Let Mime::Type.parse *<em>/*</em>, like Mime["text/*"] =&gt; text/html, text/json, text/xml</li>
+  <li>Find exist template which match to the mime type list.</li>
+  <li>If find the template, render it, or else, raise "MissingTemplate" error.</li>
 </ol>
 This is my solution for fixing it,  https://gist.github.com/1517007
 

@@ -14,11 +14,11 @@ You will find I was passing the data <strong> {:pace=&gt;"..."} </strong> to th
 Couple of weeks past, one day, when I was driving back from shanghai to hangzhou, I overheard my colleagues was discussing about this issue, they found this problem is referred to some multi-process issue. Thereafter, I did a more deeper investigation, then finally found the reason and knew how to recur it.
 <h3>How to recur it?</h3>
 <ol>
-	<li>memcached -vv</li>
-	<li>watch lsof -i :11211</li>
-	<li>unicorn -c config/unicorn.conf.rb -E production</li>
-	<li>ab -n 1000 -c 100 http://localhost:8080 (You have to run this code as soon as possible after ran unicorn command.)</li>
-	<li>tail -f log/production.log | grep ActionView::Template::Error</li>
+  <li>memcached -vv</li>
+  <li>watch lsof -i :11211</li>
+  <li>unicorn -c config/unicorn.conf.rb -E production</li>
+  <li>ab -n 1000 -c 100 http://localhost:8080 (You have to run this code as soon as possible after ran unicorn command.)</li>
+  <li>tail -f log/production.log | grep ActionView::Template::Error</li>
 </ol>
 Then you would see some error messages in production.log which is the same to message wroten above.
 <h3>What's the cause?</h3>

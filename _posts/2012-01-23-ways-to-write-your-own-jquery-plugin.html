@@ -38,12 +38,12 @@ But in case of <strong>doesn't collide with other libraries that might use the d
 })( jQuery );</pre>
 Best practices:
 <ol>
-	<li>Always wrap your plugin in a closure: (function( $ ){ /* plugin goes here */ })( jQuery );</li>
-	<li>Don't redundantly wrap the this keyword in the immediate scope of your plugin's function</li>
-	<li>Unless you're returning an intrinsic value from your plugin, always have your plugin's function return the this keyword to maintain chainability.</li>
-	<li>Rather than requiring a lengthy amount of arguments, pass your plugin settings in an object literal that can be extended over the plugin's defaults.</li>
-	<li>Don't clutter the jQuery.fn object with more than one namespace per plugin.</li>
-	<li>Always namespace your methods, events and data.</li>
-	<li>jQuery.fn is pronounced jQuery effin'</li>
+  <li>Always wrap your plugin in a closure: (function( $ ){ /* plugin goes here */ })( jQuery );</li>
+  <li>Don't redundantly wrap the this keyword in the immediate scope of your plugin's function</li>
+  <li>Unless you're returning an intrinsic value from your plugin, always have your plugin's function return the this keyword to maintain chainability.</li>
+  <li>Rather than requiring a lengthy amount of arguments, pass your plugin settings in an object literal that can be extended over the plugin's defaults.</li>
+  <li>Don't clutter the jQuery.fn object with more than one namespace per plugin.</li>
+  <li>Always namespace your methods, events and data.</li>
+  <li>jQuery.fn is pronounced jQuery effin'</li>
 </ol>
 Reference link: http://docs.jquery.com/Plugins/Authoring

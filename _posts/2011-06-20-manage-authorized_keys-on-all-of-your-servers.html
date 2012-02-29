@@ -13,8 +13,8 @@ This tool is used to mass deploy ssh-keys to all your servers according to the c
 You can download at `https://github.com/hlxwell/ssh-key-sync-man`
 <h1>Usage</h1>
 <ul>
-	<li><strong><span style="font-family: monospace; font-size: 14px; line-height: 22px;">gem install ssh-key-sync-man</span></strong></li>
-	<li>Put all your team members' keys into one <code>available_public_keys</code> directory with the structure looks like:</li>
+  <li><strong><span style="font-family: monospace; font-size: 14px; line-height: 22px;">gem install ssh-key-sync-man</span></strong></li>
+  <li>Put all your team members' keys into one <code>available_public_keys</code> directory with the structure looks like:</li>
 </ul>
 <ol></ol>
 <p style="padding-left: 60px;">available_public_keys/groupA/michael</p>
@@ -24,14 +24,14 @@ You can download at `https://github.com/hlxwell/ssh-key-sync-man`
 <p style="padding-left: 60px;">available_public_keys/------/ryan</p>
 
 <ul>
-	<li>Add a <code>server_list.yml</code>, format like:</li>
+  <li>Add a <code>server_list.yml</code>, format like:</li>
 </ul>
 <ol></ol>
 servers: groupA: - host: xxx.com user: app groupB: - host: aaa.com user: app alias: app_server - host: aaa.com user: db alias: db_master
 
 (You can puts <code>available_public_keys</code> and <code>server_list.yml</code> at github, them people can add files by themselves)
 <ul>
-	<li><strong>ssh-key-sync-man -g groupA</strong></li>
+  <li><strong>ssh-key-sync-man -g groupA</strong></li>
 </ul>
 <ol></ol>
 This will deploy public keys in <code>available_public_keys/groupA</code> to groupA servers

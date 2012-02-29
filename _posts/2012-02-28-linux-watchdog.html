@@ -21,17 +21,17 @@ Linux 自带了一个 watchdog 的实现，用于监视系统的运行，包括�
 
 在用户空间，还有一个叫做 watchdog 的守护进程，它可以定期对系统进行检测，包括：
 <ul>
-	<li>Is the process table full?</li>
-	<li>Is there enough free memory?</li>
-	<li>Are some files accessible?</li>
-	<li>Have some files changed within a given interval?</li>
-	<li>Is the average work load too high?</li>
-	<li>Has a file table overflow occurred?</li>
-	<li>Is a process still running? The process is specified by a pid file.</li>
-	<li>Do some IP addresses answer to ping?</li>
-	<li>Do network interfaces receive traffic?</li>
-	<li>Is the temperature too high? (Temperature data not always available.)</li>
-	<li>Execute a user defined command to do arbitrary tests.</li>
+  <li>Is the process table full?</li>
+  <li>Is there enough free memory?</li>
+  <li>Are some files accessible?</li>
+  <li>Have some files changed within a given interval?</li>
+  <li>Is the average work load too high?</li>
+  <li>Has a file table overflow occurred?</li>
+  <li>Is a process still running? The process is specified by a pid file.</li>
+  <li>Do some IP addresses answer to ping?</li>
+  <li>Do network interfaces receive traffic?</li>
+  <li>Is the temperature too high? (Temperature data not always available.)</li>
+  <li>Execute a user defined command to do arbitrary tests.</li>
 </ul>
 如果某项检测失败，则可能导致一次　soft reboot （模拟一次　shutdown　命令的执行）
 

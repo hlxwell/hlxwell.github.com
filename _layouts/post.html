@@ -7,3 +7,11 @@ layout: default
 <script type="text/javascript" src="/js/jquery.min.js"/>
 <script type="text/javascript" src="/js/jquery.snippet.min.js" />
 <link rel="stylesheet" href="/css/jquery.snippet.min.css" type="text/css" media="screen" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+  $(function(){
+    $("pre.htmlCode").snippet("html");
+    $("pre.styles").snippet("css",{style:"greenlcd"});
+    $("pre.js").snippet("javascript",{style:"random",transparent:true,showNum:false});
+  });
+</script>
