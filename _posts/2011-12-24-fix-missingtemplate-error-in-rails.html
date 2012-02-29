@@ -1,0 +1,46 @@
+--- 
+layout: post
+title: Fix MissingTemplate Error in Rails
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_bb34ee8114e82d630450fb550f395529: "{{unknown}}"
+  _oembed_72e5f567f9930ff94370465d715ebc8f: "{{unknown}}"
+  _oembed_45c9bc22e4689758a9804999f0e62f4b: "{{unknown}}"
+  _oembed_b3ed68aa247ee764a99db9ba7621001c: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_15de91079d924364db607135d986fe42: "{{unknown}}"
+  _oembed_ea3b88801187b56fdae71eeb15d57e00: "{{unknown}}"
+  _oembed_c665a8a7d71cc15fb3bf324f953d1121: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+Recently, in my company project's Airbrake, found a lot of MissingTemplate errors, due to many requests didn't have "content-type", but a list of "http_accept", like, "text/*", actually we do have the "text/html", why it doesn't go to render it. Then I spend couple of days to look into Rails source code to find out the reason.
+
+In Rails, if you not explicitly write "render" method at the end of a Action, it will invoke a "default_render" method, which at <strong>action_controller/metal/implicit_render.rb</strong>, it first call "send_action" if after action method been executed still no "response_body", then it will run default_render.
+
+The render method is located at <strong>action_controller/metal/rendering.rb</strong>, although it has a method call chain, which super is at <strong>abstract_controller/rendering.rb.</strong> This render method will go to "AbstractRenderer#render", then finally "Template#render". but before the "Template#render", the Renderer will go to  "LookupContext#find_template" to find available template according to context. <strong>LookupContext#find_all, #find</strong> is the method find template, but it is using @view_paths.find_all, which is a<strong> ActionView::PathSet </strong>object.
+
+ActionView::PathSet#find_all, finally use <strong>FileSystemResolver#find_all</strong> to find file template. I looked into the code and debugged a little bit found the finally template finding behavior is <strong>Dir['"YOU_PROJECT/app/views/home/feedback{.en,.en,}{.json,}{.rhtml,.rjs,.builder,.rxml,.erb,}"']</strong>, it's actually is home/feedback{locale}{formats}{handler}, you can only change locale and formats by request header.
+
+So what's the  problem of MissingTemplate? because text/* wasn't been convert to text/json, text/html ... , but it is fixed in Rails edge. (4.0.0.beta)
+<p style="padding-left: 30px;">#mime_negotiation.rb
+def parse_data_with_trailing_star(input)
+Mime::SET.select { |m| m =~ input }
+end</p>
+so Mime::Type.parse("text/*") will return correct result.
+
+Solution to solve this issue is:
+<ol>
+	<li>Let Mime::Type.parse *<em>/*</em>, like Mime["text/*"] =&gt; text/html, text/json, text/xml</li>
+	<li>Find exist template which match to the mime type list.</li>
+	<li>If find the template, render it, or else, raise "MissingTemplate" error.</li>
+</ol>
+This is my solution for fixing it,  https://gist.github.com/1517007
+
+This is the issue on rails github: https://github.com/rails/rails/issues/4127

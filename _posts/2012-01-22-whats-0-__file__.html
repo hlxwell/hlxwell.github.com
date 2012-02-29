@@ -1,0 +1,25 @@
+--- 
+layout: post
+title: What's $0 == __FILE__
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_bb34ee8114e82d630450fb550f395529: "{{unknown}}"
+  _oembed_72e5f567f9930ff94370465d715ebc8f: "{{unknown}}"
+  _oembed_45c9bc22e4689758a9804999f0e62f4b: "{{unknown}}"
+  _oembed_b3ed68aa247ee764a99db9ba7621001c: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+<strong>__FILE__</strong> is the name of the current source file.
+<strong>$0</strong> at the top level is the name of the top-level program being executed.
+<strong>$0 == __FILE__</strong> means if you are running a rb file directly.
+You'll often see this used in a library file that usually gets
+loaded from another file (so __FILE__ == $0 is false), but can also be
+run standalone for the sake of running tests. That's why need to add this condition.

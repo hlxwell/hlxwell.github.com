@@ -1,0 +1,39 @@
+--- 
+layout: post
+title: present? and any? in ActiveRecord and ActiveModel
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_bb34ee8114e82d630450fb550f395529: "{{unknown}}"
+  _oembed_72e5f567f9930ff94370465d715ebc8f: "{{unknown}}"
+  _oembed_45c9bc22e4689758a9804999f0e62f4b: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+<strong>TIPS:</strong>
+
+Model.where().present? == Model.where().any? == Model.where().count &gt; 0
+
+<strong>Extension:</strong>
+
+Model.where().many? == Model.where().count &gt; 1
+Model.where().empty? == Model.where().count == 1
+
+<strong>One thing different from #present? is</strong>
+
+Model.where().present? *!=* Model.present?
+Model.where().any? *==* Model.any?
+
+ree-1.8.7-2011.03 :029 &gt; Benchmark.ms { PlannedRun.where("plan_id &gt; 0").present? }
+=&gt; 606.235027313232
+ree-1.8.7-2011.03 :030 &gt; Benchmark.ms { PlannedRun.present? }
+=&gt; 0.0820159912109375 &lt;--- Object.present? not ActiveModel#count &gt; 0
+
+SO My suggestion is:
+Using #any? at anywhere for active_record or active_model to check "any record exist?"

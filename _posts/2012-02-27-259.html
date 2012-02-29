@@ -1,0 +1,27 @@
+--- 
+layout: post
+title: Spying on Apache and PHP with Strace
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_15de91079d924364db607135d986fe42: "{{unknown}}"
+  _oembed_ea3b88801187b56fdae71eeb15d57e00: "{{unknown}}"
+  _oembed_c665a8a7d71cc15fb3bf324f953d1121: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+<pre>
+lsof -p pid // get open files of process#pid
+pidof command_name // get pid of command
+cut -c12-19 // only get 12-19 chars
+sort -rn // sort all text
+strace -p pid // to trace a process
+lsof filename // to list all processes opening this file or directory.
+</pre>
+
+
+<iframe src="http://www.youtube.com/embed/eF-p--AH37E" frameborder="0" width="560" height="315"></iframe>

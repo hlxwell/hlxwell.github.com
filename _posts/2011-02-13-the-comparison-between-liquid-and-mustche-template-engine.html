@@ -1,0 +1,64 @@
+--- 
+layout: post
+title: The comparison between liquid and mustche template engine.
+tags: 
+- liquid
+- mustache
+- Rails
+- rails
+- template engine
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _wp_old_slug: ""
+  _oembed_230e64107bc947b3d4abfe9d13f3f7c8: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_15de91079d924364db607135d986fe42: "{{unknown}}"
+  _oembed_ea3b88801187b56fdae71eeb15d57e00: "{{unknown}}"
+  _oembed_c665a8a7d71cc15fb3bf324f953d1121: "{{unknown}}"
+  _oembed_f69214ce31a8bdbdbe280fda43f7fd6f: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+As we know when we trying to render customer edited html template we'd better to use some other logic less or more safety template engine which won't provide too much unsafety functions to designer, like liquid or mustche --- 2 most popular template engines.
+
+Let's compare them on two aspects: 1. Integrate With Rails 2. Features for designers
+
+<strong>1. Integrate With Rails</strong>
+
+Liquid:
+As long as you add this in configure file:
+<blockquote>ActionView::Base::register_template_handler :liquid, LiquidView</blockquote>
+Then you would be able to intead index.html.erb with index.html.liquid, any instance variable will be able to use in liquid template.
+
+Mustache:
+You need to install mustache rails plugin:
+<blockquote>https://github.com/adamsalter/mustache-rails</blockquote>
+here is a example: https://github.com/foca/mustache-on-rails-example
+What I most don't like mustache is it can't pass controller variable instance to mustache template.
+You need to create a file to provide data to mustache template, like:
+<blockquote>class IndexView &lt; MustacheRails
+# you have access to methods such as action_name controller_name and any url helpers
+# as action_view context is asked
+
+def questions
+context[:_questions].map(&amp;:serializable_hash)
+end
+end</blockquote>
+That means you need to creat not only a index.html.mustache but also index.rb file. That lame!!!
+
+<strong>2. Features for designers</strong>
+
+Below are manuals for each template engine.
+
+Liquid: https://github.com/tobi/liquid/wiki/Liquid-for-Designers
+
+Mustache: http://mustache.github.com/mustache.5.html
+
+As we can see, Liquid support: Filter methods(Like string and number operation methods), Logic controlling tags (if-else, for loop, case..when block ....). But in mustache it only provide: fetch data from collection and section. (The behavior of the section is determined by the value of the key. False Values or Empty Lists)
+
+<strong>Conclusion:
+</strong> Mustache is weak on template helper methods, and awkward to integrate with rails. But I don't know what's the performance side of it.

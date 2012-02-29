@@ -1,0 +1,27 @@
+--- 
+layout: post
+title: installing snmpd on ubuntu
+tags: 
+- Linux
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+---
+<ol>
+	<li>sudo apt-get install snmpd snmp</li>
+	<li>change listen ip,  remove 127.0.0.1 in /etc/default/snmpd file</li>
+	<li>change the community string for a readonly user
+#       sec.name  source          community
+#com2sec paranoid  default         public
+com2sec readonly  default         itjob.fm
+#com2sec readwrite default         private</li>
+	<li>Setup syslocation and contact
+syslocation China
+syscontact Michael</li>
+	<li>Then you restart the server /etc/init.d/snmpd restart</li>
+	<li>Test: snmpwalk -v 2 localhost -c itjob.fm system</li>
+</ol>
+<div><span style="font-family: 'Trebuchet MS', Arial, Verdana; font-size: 12px; line-height: 21px; text-align: left; background-color: #ebebec;">
+</span></div>

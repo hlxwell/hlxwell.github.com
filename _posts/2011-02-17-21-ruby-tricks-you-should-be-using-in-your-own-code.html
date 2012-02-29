@@ -1,0 +1,208 @@
+--- 
+layout: post
+title: 21 Ruby Tricks You Should Be Using In Your Own Code
+tags: 
+- Life
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _wp_old_slug: ""
+  _oembed_230e64107bc947b3d4abfe9d13f3f7c8: "{{unknown}}"
+  _oembed_bb34ee8114e82d630450fb550f395529: "{{unknown}}"
+  _oembed_72e5f567f9930ff94370465d715ebc8f: "{{unknown}}"
+  _oembed_45c9bc22e4689758a9804999f0e62f4b: "{{unknown}}"
+  _oembed_b3ed68aa247ee764a99db9ba7621001c: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_15de91079d924364db607135d986fe42: "{{unknown}}"
+  _oembed_ea3b88801187b56fdae71eeb15d57e00: "{{unknown}}"
+  _oembed_c665a8a7d71cc15fb3bf324f953d1121: "{{unknown}}"
+  _oembed_f69214ce31a8bdbdbe280fda43f7fd6f: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+Writing for Ruby Inside, I get to see a lot of Ruby code. Most is good, but sometimes we forget some of Ruby's shortcuts and tricks and reinvent the wheel instead. In this post I present 21 different Ruby "tricks," from those that most experienced developers use every day to the more obscure. Whatever your level, a refresh may help you the next time you encounter certain coding scenarios.
+
+<em><strong>Note to beginners:</strong> If you're still learning Ruby, check out my <a href="http://beginningruby.org/">Beginning Ruby</a> book.</em>
+
+<strong>2009 Update:</strong> This post was written in early 2008 and looking back on it, there are a couple of tricks that I wouldn't recommend anymore - or to which extra warnings need to be added. I've added paragraphs like this where necessary. Enjoy! :-)
+<h3>1 - Extract regular expression matches quickly</h3>
+A typical way to extract data from text using a regular expression is to use the <em>match</em>method. There is a shortcut, however, that can take the pain out of the process:
+<pre>email = "Fred Bloggs &lt;fred@bloggs.com&gt;"
+email.match(/&lt;(.*?)&gt;/)[1]            # =&gt; "fred@bloggs.com"
+email[/&lt;(.*?)&gt;/, 1]                  # =&gt; "fred@bloggs.com"
+email.match(/(x)/)[1]                # =&gt; NoMethodError [:(]
+email[/(x)/, 1]                      # =&gt; nil
+email[/([bcd]).*?([fgh])/, 2]        # =&gt; "g"</pre>
+Ultimately, using the <code>String#[]</code> approach is cleaner though it might seem more "magic" to you. It's also possible to use it without including an extra argument if you just want to match the entire regular expression. For example:
+<pre>x = 'this is a test'
+x[/[aeiou].+?[aeiou]/]    # =&gt; 'is i'</pre>
+In this example, we match the first example of "a vowel, some other characters, then another vowel."
+<h3>2 - Shortcut for Array#join</h3>
+It's common knowledge that <code>Array#*</code>, when supplied with a number, multiplies the size of the array by using duplicate elements:
+<pre>[1, 2, 3] * 3 == [1, 2, 3, 1, 2, 3, 1, 2, 3]</pre>
+It's <em>not</em> well known, however, that when given a string as an argument <code>Array#*</code> does a<em>join</em>!
+<pre>%w{this is a test} * ", "                 # =&gt; "this, is, a, test"
+h = { :name =&gt; "Fred", :age =&gt; 77 }
+h.map { |i| i * "=" } * "\n"              # =&gt; "age=77\nname=Fred"</pre>
+<h3>3 - Format decimal amounts quickly</h3>
+Formatting floating point numbers into a form used for prices can be done with <em>sprintf</em> or, alternatively, with a formatting interpolation:
+<pre>money = 9.5
+"%.2f" % money                       # =&gt; "9.50"</pre>
+<h3>4 - Interpolate text quickly</h3>
+The formatting interpolation technique from #3 comes out again, this time to insert a string inside another:
+<pre>"[%s]" % "same old drag"             # =&gt; "[same old drag]"</pre>
+You can use an array of elements to substitute in too:
+<pre>x = %w{p hello p}
+"&lt;%s&gt;%s&lt;/%s&gt;" % x                    # =&gt; "&lt;p&gt;hello&lt;/p&gt;"</pre>
+<h3>5 - Delete trees of files</h3>
+Don't resort to using the shell to delete directories. Ruby comes with a handy file utilities library called <code>FileUtils</code> that can do the hard work:
+<pre>require 'fileutils'
+FileUtils.rm_r 'somedir'</pre>
+Be careful how you use this one! There's a <code>FileUtils.rm_rf</code> too..
+<h3>6 - Exploding enumerables</h3>
+<em>*</em> can be used to "explode" enumerables (arrays and hashes). "Exploding" is sort of an implicit on-the-fly conversion from an array to regular method arguments. We'll let the examples do the talking:
+<pre>a = %w{a b}
+b = %w{c d}
+[a + b]                              # =&gt; [["a", "b", "c", "d"]]
+[*a + b]                             # =&gt; ["a", "b", "c", "d"]</pre>
+<pre>a = { :name =&gt; "Fred", :age =&gt; 93 }
+[a]                                  # =&gt; [{:name =&gt; "Fred", :age =&gt;93}]
+[*a]                                 # =&gt; [[:name, "Fred"], [:age, 93]]</pre>
+<pre>a = %w{a b c d e f g h}
+b = [0, 5, 6]
+a.values_at(*b).inspect              # =&gt; ["a", "f", "g"]</pre>
+<h3>7 - Cut down on local variable definitions</h3>
+Instead of defining a local variable with some initial content (often just an empty hash or array), you can instead define it "on the go" so you can perform operations on it at the same time:
+<pre>(z ||= []) &lt;&lt; 'test'</pre>
+<strong>2009 Update:</strong> This is pretty rancid, to be honest. I've changed my mind; you <em>shouldn't</em> be doing this :)
+<h3>8 - Using non-strings or symbols as hash keys</h3>
+It's rare you see anyone use non-strings or symbols as hash keys. It's totally possible though, and sometimes handy (and, no, this isn't necessarily a great example!):
+<pre>does = is = { true =&gt; 'Yes', false =&gt; 'No' }
+does[10 == 50]                       # =&gt; "No"
+is[10 &gt; 5]                           # =&gt; "Yes"</pre>
+<h3>9 - Use 'and' and 'or' to group operations for single liners</h3>
+This is a trick that more confident Ruby developers use to tighten up their code and remove short multi-line if and unless statements:
+<pre>queue = []
+%w{hello x world}.each do |word|
+  queue &lt;&lt; word and puts "Added to queue" unless word.length &lt;  2
+end
+puts queue.inspect
+
+# Output:
+#   Added to queue
+#   Added to queue
+#   ["hello", "world"]</pre>
+<strong>2009 Update:</strong> Be careful here - this one can sting you in the butt if your first expression returns <code>nil</code> even when it <em>works.</em> A key example of this is with the <code>puts</code> method which returns <code>nil</code> even after printing the supplied arguments.
+<h3>10 - Do something only if the code is being implicitly run, not<em>require</em>d</h3>
+This is a very common pattern amongst experienced Ruby developers. If you're writing a Ruby script that could be used either as a library OR directly from the command line, you can use this trick to determine whether you're running the script directly or not:
+<pre>if __FILE__ == $0
+  # Do something.. run tests, call a method, etc. We're direct.
+end</pre>
+<h3>11 - Quick mass assignments</h3>
+Mass assignment is something most Ruby developers learn early on, but it's amazing how little it's used relative to its terseness:
+<pre>a, b, c, d = 1, 2, 3, 4</pre>
+It can come in particularly useful for slurping method arguments that have been bundled into an array with *:
+<pre>def my_method(*args)
+  a, b, c, d = args
+end</pre>
+If you want to get really smart (although this is more 'clever' than truly wise):
+<pre>def initialize(args)
+  args.keys.each { |name| instance_variable_set "@" + name.to_s, args[name] }
+end</pre>
+<h3>12 - Use ranges instead of complex comparisons for numbers</h3>
+No more <em>if x &gt; 1000 &amp;&amp; x &lt; 2000</em> nonsense. Instead:
+<pre>year = 1972
+puts  case year
+        when 1970..1979: "Seventies"
+        when 1980..1989: "Eighties"
+        when 1990..1999: "Nineties"
+      end</pre>
+<h3>13 - Use enumerations to cut down repetitive code</h3>
+Rubyists are often keen to remove repetition - often espousing "DRY" (Don't Repeat Yourself). You can take this to extremes using Ruby's enumerators to perform similar operations multiple times. Consider requiring multiple files, for instance:
+<pre>%w{rubygems daemons eventmachine}.each { |x| require x }</pre>
+<h3>14 - The Ternary Operator</h3>
+Another trick that's usually learned early on by Ruby developers but rarely in less experienced developers' code is the "ternary operator." The ternary operator is not a fix-all, but it can sometimes make things tighter, particularly in view templates.
+<pre>puts x == 10 ? "x is ten" : "x is not ten"
+
+# Or.. an assignment based on the results of a ternary operation:
+LOG.sev_threshold = ENVIRONMENT == :development ? Logger::DEBUG : Logger::INFO</pre>
+<h3>15 - Nested Ternary Operators</h3>
+It can be asking for trouble but ternary operators <em>can</em> be nested within each other (after all, they only return objects, like everything else):
+<pre>qty = 1
+qty == 0 ? 'none' : qty == 1 ? 'one' : 'many'
+# Just to illustrate, in case of confusion:
+(qty == 0 ? 'none' : (qty == 1 ? 'one' : 'many'))</pre>
+<h3>16 - Fight redundancy with Ruby's "logic" features</h3>
+I commonly see methods using this sort of pattern:
+<pre>def is_odd(x)
+  # Wayyyy too long..
+  if x % 2 == 0
+    return false
+  else
+    return true
+  end
+end</pre>
+Perhaps we can use a ternary operator to improve things?
+<pre>def is_odd(x)
+  x % 2 == 0 ? false : true
+end</pre>
+It's shorter, and I've seen that pattern a <strong>lot</strong> (sadly) but you should go one step further and rely on the <em>true / false</em> responses Ruby's comparison operators <strong>already</strong> give!
+<pre>def is_odd(x)
+  # Use the logical results provided to you by Ruby already..
+  x % 2 != 0
+end</pre>
+Sometimes, though, you want to explicitly convert implicit true/false scenarios into explicit true/false results:
+<pre>class String
+  def contains_digits
+    self[/\d/] ? true : false
+  end
+end</pre>
+If we hadn't done this, you'd get back either <em>nil</em> or the first matched digit rather than true or false.
+<h3>17 - See the whole of an exception's backtrace</h3>
+<pre>def do_division_by_zero; 5 / 0; end
+begin
+  do_division_by_zero
+rescue =&gt; exception
+  puts exception.backtrace
+end</pre>
+<h3>18 - Allow both single items AND arrays to be enumerated against</h3>
+<pre># [*items] converts a single object into an array with that single object
+# of converts an array back into, well, an array again
+[*items].each do |item|
+  # ...
+end</pre>
+<h3>19 - Rescue blocks don't need to be tied to a 'begin'</h3>
+<pre>def x
+  begin
+    # ...
+  rescue
+    # ...
+  end
+end</pre>
+<pre>def x
+  # ...
+rescue
+  # ...
+end</pre>
+<h3>20 - Block comments</h3>
+I tend to see this in more 'old-school' Ruby code. It's surprisingly under-used though, but looks a lot better than a giant row of pound signs in many cases:
+<pre>puts "x"
+=begin
+  this is a block comment
+  You can put anything you like here!
+
+  puts "y"
+=end
+puts "z"</pre>
+<strong>2009 Update:</strong> Curiously, I've not seen any significant uptake of block comments in Ruby but.. I don't use them myself either anymore. I suspect with column editing and keyboard shortcuts in common text editors, the motivation here has lessened.
+<h3>21 - Rescue to the rescue</h3>
+You can use <em>rescue</em> in its single line form to return a value when other things on the line go awry:
+<pre>h = { :age =&gt; 10 }
+h[:name].downcase                         # ERROR
+h[:name].downcase rescue "No name"        # =&gt; "No name"</pre>
+If you want to post your own list of Ruby tricks to your blog, send trackback here or leave a comment, and I'll link to all of them in a future post. Alternatively, feel free to post your own Ruby tricks as comments here, or critique or improve on those above.
+
+<em>As an aside, Ruby Inside is exactly two years old today. Thanks for your support! Intriguingly, the <a href="http://www.rubyinside.com/initializing-instance-variables-from-the-parameter-list-4.html">first post was <strong>another Ruby trick</strong></a> that I forgot to include above, so check that out too.</em>

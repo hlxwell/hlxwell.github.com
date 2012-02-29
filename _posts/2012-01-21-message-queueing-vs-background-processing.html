@@ -1,0 +1,26 @@
+--- 
+layout: post
+title: message queueing vs background processing
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_230e64107bc947b3d4abfe9d13f3f7c8: "{{unknown}}"
+  _oembed_bb34ee8114e82d630450fb550f395529: "{{unknown}}"
+  _oembed_72e5f567f9930ff94370465d715ebc8f: "{{unknown}}"
+  _oembed_45c9bc22e4689758a9804999f0e62f4b: "{{unknown}}"
+  _oembed_b3ed68aa247ee764a99db9ba7621001c: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+Just read about this article:
+
+http://www.mikeperham.com/2011/05/04/background-processing-vs-message-queueing/
+
+One important viewpoint in this artile is: <strong>message queueing is a superset of background processing</strong>
+
+girl_friday plugin is a backgroud processing gem, that no need install any MQ system. So for system don't need to queue up request, can use this instead of complicated MQ system.

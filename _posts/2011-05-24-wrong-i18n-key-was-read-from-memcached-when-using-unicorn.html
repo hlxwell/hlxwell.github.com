@@ -1,0 +1,87 @@
+--- 
+layout: post
+title: Wrong I18n key was read from memcached, when using unicorn
+tags: 
+- Life
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_bb34ee8114e82d630450fb550f395529: "{{unknown}}"
+  _oembed_72e5f567f9930ff94370465d715ebc8f: "{{unknown}}"
+  _oembed_45c9bc22e4689758a9804999f0e62f4b: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+---
+Recently I got a error from my project, which reported by hoptoad, the error information like:
+<blockquote>I18n::MissingInterpolationArgument: missing interpolation argument in "I ran %{distance}km on %{date}. It took %{time}" ({:pace=&gt;"&lt;input class=\"pace_field normalC\" id=\"dashboardPace\" name=\"run[pace]\" size=\"6\" type=\"text\" /&gt;"} given)</blockquote>
+You will find I was passing the data <strong> {:pace=&gt;"..."} </strong> to the translation key: <strong>"I ran %{distance}km on %{date}. It took %{time}"</strong>.  this translation key required 3 parameters, but I only given one. And when I look into the code, I found there is no such a mistake as I mentioned above. Then I gave up to fix this problem.
+
+Couple of weeks past, one day, when I was driving back from shanghai to hangzhou, I overheard my colleagues was discussing about this issue, they found this problem is referred to some multi-process issue. Thereafter, I did a more deeper investigation, then finally found the reason and knew how to recur it.
+<h3>How to recur it?</h3>
+<ol>
+	<li>memcached -vv</li>
+	<li>watch lsof -i :11211</li>
+	<li>unicorn -c config/unicorn.conf.rb -E production</li>
+	<li>ab -n 1000 -c 100 http://localhost:8080 (You have to run this code as soon as possible after ran unicorn command.)</li>
+	<li>tail -f log/production.log | grep ActionView::Template::Error</li>
+</ol>
+Then you would see some error messages in production.log which is the same to message wroten above.
+<h3>What's the cause?</h3>
+If you look carefully, when you start unicorn server, all the unicorn workers are using the same memcached connection.
+<div>memcached 11700 michaelhe   30u  IPv6 0xffffff800bbe3600      0t0  TCP localhost:11211-&gt;localhost:59310 (ESTABLISHED)</div>
+<div>ruby      <strong>19672</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19719</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19720</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19721</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19722</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19723</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19724</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19725</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      <strong>19726</strong> michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:<strong>59310</strong>-&gt;localhost:11211 (ESTABLISHED)</div>
+Then 2 http requests come, they are processed by 2 unicorn processes, then request A send many "get" requests to memcached, as well as request B. but they are using the same memcached connection at beginning, so in extreme condition, request B will get the values which is respond for the request send from request A, whereafter the tragedy happened.
+
+&nbsp;
+
+However, after several errors was raised, everything goes well, no error was raised for all the time. I notice one thing:
+<div>memcached 11700 michaelhe   30u  IPv6 0xffffff800bbe3600      0t0  TCP localhost:11211-&gt;localhost:59310 (ESTABLISHED)</div>
+<div>memcached 11700 michaelhe   31u  IPv6 0xffffff800f2b7140      0t0  TCP localhost:11211-&gt;localhost:59979 (ESTABLISHED)</div>
+<div>memcached 11700 michaelhe   32u  IPv6 0xffffff800bbe54a0      0t0  TCP localhost:11211-&gt;localhost:59980 (ESTABLISHED)</div>
+<div>memcached 11700 michaelhe   33u  IPv6 0xffffff800f2b7d80      0t0  TCP localhost:11211-&gt;localhost:59984 (ESTABLISHED)</div>
+<div>memcached 11700 michaelhe   34u  IPv6 0xffffff800f2b83a0      0t0  TCP localhost:11211-&gt;localhost:59986 (ESTABLISHED)</div>
+<div>memcached 11700 michaelhe   35u  IPv6 0xffffff800f2bfb70      0t0  TCP localhost:11211-&gt;localhost:59987 (ESTABLISHED)</div>
+<div>memcached 11700 michaelhe   36u  IPv6 0xffffff800f2c0dd0      0t0  TCP localhost:11211-&gt;localhost:59991 (ESTABLISHED)</div>
+<div>memcached 11700 michaelhe   37u  IPv6 0xffffff800f2b7450      0t0  TCP localhost:11211-&gt;localhost:59994 (ESTABLISHED)</div>
+<div>ruby      19672 michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:59310-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19719 michaelhe   10u  IPv6 0xffffff800f2b8cd0      0t0  TCP localhost:59984-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19720 michaelhe   11u  IPv6 0xffffff800bbe3f30      0t0  TCP localhost:59986-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19721 michaelhe   10u  IPv6 0xffffff800f2b7a70      0t0  TCP localhost:59979-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19722 michaelhe   10u  IPv6 0xffffff800bbe4550      0t0  TCP localhost:59987-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19723 michaelhe   10u  IPv6 0xffffff800f2bef30      0t0  TCP localhost:59991-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19724 michaelhe   10u  IPv6 0xffffff800f2bec20      0t0  TCP localhost:59980-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19725 michaelhe   10u  IPv6 0xffffff800bbe3910      0t0  TCP localhost:59310-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>ruby      19726 michaelhe   10u  IPv6 0xffffff800f2bf860      0t0  TCP localhost:59994-&gt;localhost:11211 (ESTABLISHED)</div>
+The connections to memcached of each unicorn worker was reset, each worker has its own connection, so that's why it goes correctly.
+<h3>How to solve it?</h3>
+After a little research online, I found the comments in unicorn config file:
+<pre>
+<div id="LC51">after_fork do |server, worker|</div>
+<div id="LC52">  ##</div>
+<div id="LC53">  # Unicorn master loads the app then forks off workers - because of the way</div>
+<div id="LC54">  # Unix forking works, we need to <strong>make sure we aren't using any of the parent's</strong></div>
+<div id="LC55">  #<strong> sockets</strong>, e.g. db connection</div></pre>
+Yes, the magic code to fix this problem is:
+<div>
+<blockquote>Rails.cache.reset</blockquote>
+</div>
+<div>
+<blockquote>I18n.cache_store.reset</blockquote>
+</div>
+<div>add them into the <strong>after_fork</strong> block in unicorn config file. And what happened then?</div>
+<div>
+<div>memcached 11700 michaelhe   30u  IPv6 0xffffff800f2b7140      0t0  TCP localhost:11211-&gt;localhost:60687 (ESTABLISHED)</div>
+<div>ruby      24046 michaelhe   10u  IPv6 0xffffff800bbe3600      0t0  TCP localhost:60687-&gt;localhost:11211 (ESTABLISHED)</div>
+<div>Any other unicorn workers won't use the connection of unicorn master, instead, they will generate a new connection when on demand.</div>
+<div>BTW,  this bug happen to both ruby 1.8.7 and REE.</div>
+</div>

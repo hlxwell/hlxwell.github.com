@@ -1,0 +1,116 @@
+--- 
+layout: post
+title: Trip of Javascript OO
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_45c9bc22e4689758a9804999f0e62f4b: "{{unknown}}"
+  _oembed_72e5f567f9930ff94370465d715ebc8f: "{{unknown}}"
+  _oembed_bb34ee8114e82d630450fb550f395529: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+---
+<strong>Create Object:</strong>
+<pre lang="javascript">function MyObject() {
+  this.property = "x";
+  this.method = function() {};
+}</pre>
+Useful functions in Object: <strong>if(A instanceof Array),  hasOwnProperty('property_name')</strong>
+<h6></h6>
+<h6><strong>Prototype:</strong></h6>
+x_instance.prototype.new_method = function() {}
+
+This line will add new_method to all instances of same class of x_instance.
+
+(So. we can use this to monkey patch build-in methods or properties.)
+<h6><strong>Public and Private properties:</strong></h6>
+<pre lang="javascript">function() {
+this.public_property = "x";
+var private_property = "y";
+this.public_method = function() {}
+function private_method() {}
+}</pre>
+<strong>Static methods and properties:</strong>
+<pre lang="javascript">function mycircle() { ... }
+mycircle.aStaticProperty = true;  // static property
+mycircle.aStaticMethod =function () { ... }; // static method</pre>
+Use anonymous function to make a private scope:
+<pre lang="javascript">var mycircle = (function () {
+var privateStaticVariable = true;
+function privateStaticMethod() { ... }
+function publicConstructor() {
+this.normalInstanceProperty = 1;
+...
+alert(privateStaticVariable);
+};
+publicConstructor.prototype.normalProperty = 2;
+return publicConstructor;
+})();
+mycircle.publicStaticProperty = true;
+mycircle.publicStaticMethod = function () { ... };</pre>
+<strong>Singletons:</strong>
+<pre lang="javascript">var mySingleton = {a:1, b:2,c:function(){}}
+var aReference = mySingleton</pre>
+Another way:
+
+http://kaijaeger.com/articles/the-singleton-design-pattern-in-javascript.html
+
+also the way coffee script version:
+
+http://coffeescriptcookbook.com/chapters/design_patterns/singleton
+<pre lang="javascript">var singletonMaker = (function () {
+var privateStaticVariable = true;
+function privateStaticMethod() { ... }
+var onlyInstance;
+var returnedObject = {
+getInstance: function () {
+if( !onlyInstance ) {
+onlyInstance = new PrivateConstructor();
+onlyInstance.constructor = null; // Then you will never be able to New another this object.
+}
+return onlyInstance;
+}
+};
+function PrivateConstructor() {}
+PrivateConstructor.prototype = returnedObject;
+PrivateConstructor.prototype.publicProperty = true;
+...
+return returnedObject;
+})();
+...
+singletonMaker.foo = true;
+var mySingleton = singletonMaker.getInstance();
+alert(mySingleton.foo); //true</pre>
+<strong>Sub-classes and class inheritance:</strong>
+<pre lang="javascript">function House() {
+this.name = "house"
+this.tell_name = function() {
+console.log(this.name)
+}
+}
+
+function Villa(new_name) {
+this.name = new_name || this.name
+}
+
+// Method 1: Villa.prototype.__proto__ = House.prototype; // this is another way.
+// Method 2: Villa.prototype = House.prototype;
+// Method 3: 
+// function Villa() {
+//   House.apply(this, arguments);
+// }
+// Method 4:
+Villa.prototype = new House()
+Villa.prototype.constructor = Villa
+Villa.prototype.show_swimming_pool = function() {
+  console.log("swimming pool")
+}
+v = new Villa("villa")
+v.tell_name()
+v.show_swimming_pool()</pre>
+<strong>Javascript Objects Map:</strong>
+
+http://www.howtocreate.co.uk/tutorials/javascript/javascriptobject

@@ -1,0 +1,75 @@
+--- 
+layout: post
+title: 10 Advanced jQuery Performance Tuning Tips
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_b3ed68aa247ee764a99db9ba7621001c: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+There were a lot of good speakers at today’s <a href="http://jquerysummit.eventbrite.com/" target="_blank">jQuery Summit</a>, but <a href="http://paulirish.com/" target="_blank">Paul Irish</a>‘s talk on <em>jQuery Anti-Patterns for Performance &amp; Compression</em> was my stand-out favorite. Covering a number of advanced jQuery performance optimization techniques, this speech put my knowledge of jQuery optimization to shame.
+
+Before Paul’s talk my understanding of jQuery performance tuning was fairly simplistic:
+<ol>
+	<li>Optimize selectors to descend from an id if possible.</li>
+	<li>Use tag names when selecting classes and don’t use an excessive number of selectors.</li>
+	<li>Define variables instead of selecting the same object repeatedly.</li>
+	<li>Optimize your code replacing repetition with object oriented functions.</li>
+</ol>
+But the information Paul presented blew all that out of the water. Here are 10 jQuery performance rules I gathered from his presentation:
+<h2>1. Optimize selectors for Sizzle’s ‘right to left’ model</h2>
+As of version 1.3, jQuery has been using the <a href="http://sizzlejs.com/" target="_blank">Sizzle Javascript Selector Library</a> which works a bit differently from the selector engine used in the past. Namely it uses a ‘right to left’ model rather than a ‘left to right’, which means that given a selector string such as <code>$('div.class span.class2')</code> the engine starts the search on the right using the most specific selector (the <code>span.class2</code>) and then checks each ancestor against <code>div.class</code> rather than starting on the left and checking descendants.
+
+But what does that mean for you? Make sure that your right-most selector is really specific and any selectors on the left are more broad. For instance use:
+<pre>$('.class span.class2')</pre>
+rather than:
+<pre>$('div.class .class2')</pre>
+And of course descending from an #id is still always best:
+<pre>$('#id div.class')</pre>
+<h2>2. Use live() not click()</h2>
+jQuery’s new event handler <a href="http://docs.jquery.com/Events/live" target="_blank"><code>live()</code></a> is a much faster alternative to <code>click()</code>. It comes with an additional benefit that I am extremely excited about: the selector works even with dynamic content, meaning no more reattaching click events every time you change a piece of content.
+
+Live is faster and better for all click events and most other jQuery event handling, however stay away from it for tracking onmouseover or onsubmit.
+
+
+<h2>3. Pull elements off of the DOM while you play with them</h2>
+Let’s say you have a form that you want to append a series of inputs to. Normally you might do this:
+<pre>var theForm = $('#myForm'); inputArr.each(function() { theForm.append(this); }); </pre>
+However it’s better to pull the form element off of the DOM while you play around with it:
+<pre>var theForm = $('#myForm'); var formParent = theForm.parent(); theForm.remove(); inputArr.each(function() { theForm.append(this); }); formParent.append(theForm); </pre>
+
+
+<h2>4. Use find() rather than context</h2>
+With jQuery selectors, <a href="http://beardscratchers.com/journal/jquery-its-all-about-context" target="_blank">context</a> is good for performance, but <a href="http://docs.jquery.com/Traversing/find" target="_blank"><code>find()</code></a> is better. So instead of using context like this:
+<pre>var panels = $('#content').find('div.panel');</pre>
+It is better to use <code>find()</code>:
+<pre>var panels = $('#content').find('div.panel'); </pre>
+<a href="http://brandonaaron.net/blog/2009/06/24/understanding-the-context-in-jquery" target="_blank">More info on context</a>
+
+
+
+<h2>5. Use HTML 5</h2>
+HTML 5 means more tags: <code>&lt;section&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>, etc. More tags mean that there are less items that share a given tag name, which translates into better selector performance.
+
+<h2>6. Append style tags when styling 15 or more elements</h2>
+When styling a few elements it is best to simply use <a href="http://docs.jquery.com/CSS" target="_blank">jQuery's <code>css()</code> method</a>, however when styling 15 or more elements it is more efficient to append a style tag to the DOM:
+<pre>
+$('<style type="text/css"> div.class { color: red; } </style>')
+.appendTo('head');
+</pre>
+<h2>7. Test selectors using Google Page Speed</h2>
+The CSS selector optimization rules used by FireBug's <a href="http://code.google.com/speed/page-speed/" target="_blank">Page Speed addon</a> also apply to jQuery. If you want to test how well your selector is optimized, apply it with CSS and see if any selectors are flagged by Page Speed.
+<h2>8. Use object detection even if jQuery doesn't throw an error</h2>
+It's great that jQuery methods don't throw a ton of errors at your users, but that doesn't mean that as a developer you should just rely on that. Even though it won't throw an error, jQuery will have to execute a number of useless functions before determining that an object doesn't exist. So use a quick object detection before calling any methods on a jQuery object that may or may not exist.
+<h2>9. Use direct functions rather than their convenience counterparts</h2>
+If you look at the <a href="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js" target="_blank">jQuery core</a> you'll notice a variety of functions are just convenience methods for calling other functions, for instance if you call <code>getJSON()</code> it calls <code>get()</code>which calls <code>ajax()</code>. You can cut this extra work out of the loop by referencing the direct function <code>ajax()</code>.
+<h2>10. Learn the lesser known methods</h2>
+With a vast and evolving library like jQuery it can be hard to keep on top of all the methods but it is still very important. Some methods Paul pointed out specifically are<a href="http://docs.jquery.com/Utilities/jQuery.map" target="_blank"><code>map()</code></a>, <a href="http://docs.jquery.com/Traversing/slice" target="_blank"><code>slice()</code></a>, <a href="http://docs.jquery.com/Effects/stop" target="_blank"><code>stop()</code></a>, <a href="http://docs.jquery.com/Effects/queue" target="_blank"><code>queue()</code></a>, <a href="http://docs.jquery.com/Effects/dequeue" target="_blank"><code>dequeue()</code></a>, <a href="http://docs.jquery.com/Traversing/prevAll" target="_blank"><code>prevAll()</code></a>, <a href="http://www.mail-archive.com/jquery-en@googlegroups.com/msg26552.html"><code>pushStack()</code></a> and<a href="http://docs.jquery.com/Utilities/jQuery.inArray" target="_blank"><code>inArray()</code></a>.
+
+Learning the variety of methods in your toolkit will help you to better use this library and write more concise code. The worst thing you can do is write a custom function for something that already exists in the jQuery core: besides bloating your Javascript, it would take a lot of effort to write code that is optimized as well as it is by the elite and enormous group of developers who work on and debug the jQuery core.

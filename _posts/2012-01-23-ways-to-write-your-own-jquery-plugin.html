@@ -1,0 +1,56 @@
+--- 
+layout: post
+title: Ways to write your own jQuery Plugin
+tags: 
+- javascript
+- jQuery
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_b3ed68aa247ee764a99db9ba7621001c: "{{unknown}}"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+If you want to extend jQuery element collection, like:
+<pre lang="javascript">$("input[type=checkbox]").check();
+$("input[type=radio]").uncheck();</pre>
+Then you can do like this:
+<pre lang="javascript">jQuery.fn.extend({
+  check: function() {
+    return this.each(function() { this.checked = true; });
+  },
+  uncheck: function() {
+    return this.each(function() { this.checked = false; });
+  }
+});</pre>
+If you want to add methods for jQuery namespace, like:
+<pre>jQuery.min(2,3); // =&gt; 2
+jQuery.max(4,5); // =&gt; 5</pre>
+You can do like this:
+<pre lang="javascript">jQuery.extend({
+  min: function(a, b) { return a &lt; b ? a : b; },</pre>
+<pre lang="javascript">  max: function(a, b) { return a &gt; b ? a : b; }
+});</pre>
+But in case of <strong>doesn't collide with other libraries that might use the dollar sign, it's a best practice to pass jQuery to a self executing function (closure) that maps it to the dollar sign.</strong>so it can't be overwritten by another library in the scope of its execution.
+<pre>(function( $ ) {
+  $.fn.myPlugin = function() {
+
+    // Do your awesome plugin stuff here
+
+  };
+})( jQuery );</pre>
+Best practices:
+<ol>
+	<li>Always wrap your plugin in a closure: (function( $ ){ /* plugin goes here */ })( jQuery );</li>
+	<li>Don't redundantly wrap the this keyword in the immediate scope of your plugin's function</li>
+	<li>Unless you're returning an intrinsic value from your plugin, always have your plugin's function return the this keyword to maintain chainability.</li>
+	<li>Rather than requiring a lengthy amount of arguments, pass your plugin settings in an object literal that can be extended over the plugin's defaults.</li>
+	<li>Don't clutter the jQuery.fn object with more than one namespace per plugin.</li>
+	<li>Always namespace your methods, events and data.</li>
+	<li>jQuery.fn is pronounced jQuery effin'</li>
+</ol>
+Reference link: http://docs.jquery.com/Plugins/Authoring

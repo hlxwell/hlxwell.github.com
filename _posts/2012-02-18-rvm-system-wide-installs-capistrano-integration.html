@@ -1,0 +1,39 @@
+--- 
+layout: post
+title: RVM - System Wide Installs & Capistrano Integration
+tags: 
+- Rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "1"
+  _oembed_4d74d5147e9ec778dc9ef9b44ebd003f: "{{unknown}}"
+  _oembed_ffbe2fe15dde99844e8cbd024e508d7e: "{{unknown}}"
+  _oembed_9e2512e62240444051e3a828e0d07a66: "{{unknown}}"
+  _oembed_ca4a168d7413da4f5f4133ac249f1bbd: "{{unknown}}"
+---
+If you install RVM on server, mostly probably will choose run as System wide, since there is more than one account will use ruby. then the problem is when you use Capistrano deploy your application it will also say: can't find bundle, although you've installed the ruby on your server.
+
+So you need to add below lines to your <strong>deploy.rb</strong> file.
+
+require "bundler/capistrano"
+$:.unshift(File.expand_path("./lib", ENV["rvm_path"]))
+<pre>require 'rvm/capistrano'
+set :rvm_ruby_string, 'some-ruby-version' # Defaults to 'default'
+set :rvm_type, :system or :user 
+set :rvm_bin_path, "xxx" </pre>
+
+Then when you run command on server you can do like this:
+
+<pre>run "cd #{release_path}; bundle install"</pre>
+
+Doesn't need do like:
+
+<pre>run "cd #{release_path}; /full/path/to/bundle install"</pre>
+
+You also can use: <strong>cap shell</strong> to test it out if it is possible to run the command on different server.
+
+Reference article:
+
+http://blog.ninjahideout.com/posts/rvm-system-wide-installs-and-capistrano-integration
