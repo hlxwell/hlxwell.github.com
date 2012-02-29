@@ -6,13 +6,11 @@ tags:
 status: publish
 type: post
 published: true
-meta: 
-  _edit_last: "1"
 ---
 <ol>
-	<li>sudo apt-get install snmpd snmp</li>
-	<li>change listen ip,  remove 127.0.0.1 in /etc/default/snmpd file</li>
-	<li>change the community string for a readonly user
+<li>sudo apt-get install snmpd snmp</li>
+<li>change listen ip,  remove 127.0.0.1 in /etc/default/snmpd file</li>
+<li>change the community string for a readonly user
 #       sec.name  source          community
 #com2sec paranoid  default         public
 com2sec readonly  default         itjob.fm

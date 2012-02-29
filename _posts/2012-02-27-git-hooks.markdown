@@ -1,0 +1,32 @@
+--- 
+layout: post
+title: Git hooks
+tags: 
+- git
+status: publish
+type: post
+published: true
+---
+Git hooks help you to run tasks after git commands, pretty useful when you want to apply some convention on your git management.
+
+# .git/hooks
+
+applypatch-msg.sample
+commit-msg.sample
+post-commit.sample
+post-receive.sample
+post-update.sample
+pre-applypatch.sample
+pre-commit.sample
+pre-rebase.sample
+prepare-commit-msg.sample
+update.sample
+
+# Interesting hook code
+https://github.com/icefox/git-hooks
+
+# Reference
+http://book.git-scm.com/5_git_hooks.html
+
+Chinese version.
+http://gitbook.liuhui998.com/5_8.html
