@@ -1,6 +1,6 @@
 markdown: rdiscount
 paginate: 5
-# lsi: true
+lsi: true
 
 # This is the default format.
 # For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
