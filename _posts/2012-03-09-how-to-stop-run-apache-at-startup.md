@@ -2,7 +2,8 @@
 layout: post
 title: "how to stop run apache at startup"
 category: 
-tags: []
+tags:
+- Linux
 ---
 {% include JB/setup %}
 

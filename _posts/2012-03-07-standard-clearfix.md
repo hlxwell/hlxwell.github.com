@@ -2,7 +2,8 @@
 layout: post
 title: "Standard clearfix"
 category: 
-tags: []
+tags:
+- css
 ---
 {% include JB/setup %}
 

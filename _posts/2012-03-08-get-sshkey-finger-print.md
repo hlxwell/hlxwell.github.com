@@ -2,7 +2,8 @@
 layout: post
 title: "Get sshkey finger print"
 category: 
-tags: []
+tags:
+- Linux
 ---
 {% include JB/setup %}
 
