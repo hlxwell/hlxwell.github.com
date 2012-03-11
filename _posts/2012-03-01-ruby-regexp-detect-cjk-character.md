@@ -7,7 +7,7 @@ tags:
 ---
 {% include JB/setup %}
 
-{{% highlight ruby linenos %}}
+{% highlight ruby %}
 #encoding: UTF-8
 class String
   def contains_cjk?
@@ -17,7 +17,7 @@ end
 
 strings= ['中国国際放送局', '광고 프로그램', '真是牛阿', 'This is english.']
 strings.each{|s| puts s.contains_cjk?}
-{{% endhighlight %}}
+{% endhighlight %}
 
 Result will be:
 

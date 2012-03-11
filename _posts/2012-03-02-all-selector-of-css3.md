@@ -7,7 +7,8 @@ tags:
 ---
 {% include JB/setup %}
 
-{{% highlight css %}}
+
+{% highlight css %}
 *
 
 E
@@ -63,4 +64,4 @@ E ~ F
 
 :last-child
 
-{{% endhighlight %}}
+{% endhighlight %}

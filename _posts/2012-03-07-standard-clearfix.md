@@ -7,7 +7,7 @@ tags:
 ---
 {% include JB/setup %}
 
-{{% highlight css %}}
+{% highlight css %}
 .clearfix {
   zoom: 1;
 }
@@ -17,4 +17,4 @@ tags:
   clear: both;
   display: table;
 }
-{{% endhighlight %}}
+{% endhighlight %}
