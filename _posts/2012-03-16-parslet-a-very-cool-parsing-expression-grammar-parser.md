@@ -18,15 +18,15 @@ skill to make a regexp to parse this text.
 
 {% highlight ruby %}
 WORD_PARSER = /
-  (?<kanji>        [\p{Han}\p{Hiragana}\p{Katakana}]+          ){0}
-  (?<furi>         \p{Hiragana}+                               ){0}
-  (?<oword>        [^\]]+                                      ){0}
-  (?<invalid>      .                                           ){0}
-  (?<word>         \[ \g<sp> \g<word_content> \g<sp> \]        ){0}
+  (?<kanji>   [\p{Han}\p{Hiragana}\p{Katakana}]+    ){0}
+  (?<furi>    \p{Hiragana}+                         ){0}
+  (?<oword>   [^\]]+                                ){0}
+  (?<invalid> .                                     ){0}
+  (?<word>    \[ \g<sp> \g<word_content> \g<sp> \]  ){0}
 
-  (?<word_content> \g<kanji> \g<sp> \g<right> | \g<oword>      ){0}
-  (?<right>        \| \g<sp> \g<furi>                          ){0}
-  (?<sp>           [\t\ ]*                                     ){0}
+  (?<word_content> \g<kanji> \g<sp> \g<right> | \g<oword> ){0}
+  (?<right>   \| \g<sp> \g<furi>                    ){0}
+  (?<sp>      [\t\ ]*                               ){0}
 
   \g<word> | \g<invalid>
 /ux
