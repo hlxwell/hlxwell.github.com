@@ -65,3 +65,10 @@ p parser.parse(furidown)
 {% endhighlight %}
 
 Fantastic!!!
+
+Reference:
+[DSL doc](http://rubydoc.info/github/kschiess/parslet/master/Parslet/Atoms/DSL)
+[Examples](https://github.com/kschiess/parslet/tree/master/example/)
+[Get started](http://kschiess.github.com/parslet/get-started.html)
+[Parslet intro - very good intro to parse erb](http://florianhanke.com/blog/2011/02/01/parslet-intro.html)
+
