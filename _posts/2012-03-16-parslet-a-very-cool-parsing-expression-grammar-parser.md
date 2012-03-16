@@ -8,7 +8,7 @@ tags:
 {% include JB/setup %}
 
 Recently I made a japanese language learning tool, which is very cool :) . In this tool we need to create
-a mark language parser to parse this like `[kanji|furigana]`, My colleague zete, use his very professional regexp
+a mark language parser to parse like this `[kanji|furigana]`, My colleague zete, use his very professional regexp
 skill to make a regexp to parse this text.
 
 {% highlight ruby %}
@@ -29,7 +29,7 @@ WORD_PARSER = /
 
 Look at above stunning regular expression. I never toughed this level of complexity of regexp.
 But later on when I was looking at http header parser, then found a good tool, called `parslet`.
-It just could help me doing exact thing, and even could more complicated things like a new language.
+It just do the exactly same thing, and even could do more complicated things like parsing a language.
 
 {% highlight ruby %}
 require 'parslet'
