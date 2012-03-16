@@ -7,8 +7,6 @@ tags:
 ---
 {% include JB/setup %}
 
-# -*- encoding : utf-8 -*-
-require 'rubygems'
 require 'parslet'
 include Parslet
 
