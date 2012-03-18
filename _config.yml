@@ -85,7 +85,7 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : hlxwell
+      short_name : hlxwellsblog
     livefyre :
       site_id : 1234
     intensedebate :
