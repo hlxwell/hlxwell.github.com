@@ -3,7 +3,7 @@ layout: post
 title: "Add ruby load path"
 category: 
 tags:
-- ruby
+- Ruby
 ---
 {% include JB/setup %}
 

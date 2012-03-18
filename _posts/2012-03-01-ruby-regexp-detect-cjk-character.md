@@ -3,7 +3,7 @@ layout: post
 title: "Ruby regexp detect CJK character"
 category: 
 tags:
-- ruby
+- Ruby
 ---
 {% include JB/setup %}
 

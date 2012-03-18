@@ -3,7 +3,7 @@ layout: post
 title: "How to add default encoding to all files in project?"
 category: 
 tags:
-- ruby
+- Ruby
 ---
 {% include JB/setup %}
 
