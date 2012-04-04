@@ -45,8 +45,7 @@ n instanceof Ninja && n instanceof Person && n instanceof Class
 
 {% endhighlight %}
 
-
 I found this because I read it from the souce code of a opensource online game (BrowserQuest), which is based on node.js and html5 websocket.
 
-
 [Original article](http://ejohn.org/blog/simple-javascript-inheritance/)
+
