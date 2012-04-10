@@ -49,3 +49,5 @@ I found this because I read it from the souce code of a opensource online game (
 
 [Original article](http://ejohn.org/blog/simple-javascript-inheritance/)
 
+
+
