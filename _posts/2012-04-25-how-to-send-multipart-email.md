@@ -8,13 +8,13 @@ tags: []
 
 Yes, it sounds pretty easy, just write code like below:
 
-{{ highlight ruby }}
+{% highlight ruby %}
 mail(:to => user.email,
      :subject => "Welcome to My Awesome Site") do |format|
    format.html
    format.text
 end
-{{ endhighlight }}
+{% endhighlight %}
 
 This code will generate a multipart email, that put the html content as the first part, 
 and text content as second part. This will cause a problem is, when you open the email in mailbox, 
