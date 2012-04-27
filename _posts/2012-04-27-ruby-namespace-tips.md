@@ -2,7 +2,8 @@
 layout: post
 title: "Ruby namespace tips"
 category: 
-tags: []
+tags:
+- Ruby 
 ---
 {% include JB/setup %}
 

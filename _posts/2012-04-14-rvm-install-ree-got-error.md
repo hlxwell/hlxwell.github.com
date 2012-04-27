@@ -2,7 +2,8 @@
 layout: post
 title: "RVM install REE got error on Lion"
 category: 
-tags: []
+tags:
+- Ruby
 ---
 {% include JB/setup %}
 

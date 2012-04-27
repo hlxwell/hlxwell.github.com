@@ -2,7 +2,8 @@
 layout: post
 title: "How to send Multipart email in Rails."
 category: 
-tags: []
+tags:
+- Rails
 ---
 {% include JB/setup %}
 
