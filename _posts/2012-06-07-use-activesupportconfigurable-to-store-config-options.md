@@ -6,7 +6,7 @@ tags: []
 ---
 {% include JB/setup %}
 
-{{ highlight ruby }}
+{% highlight ruby %}
 class Employee
   include ActiveSupport::Configurable
   config_accessor :research_lab_entry, :paid_leave
@@ -15,10 +15,10 @@ class Employee
   # employee.research_lab_entry
   # employee.paid_leave
 end
-{{ end highlight }}
+{% endhighlight %}
 
 
-{{ highlight ruby }}
+{% highlight ruby %}
 # Set the config option at the class level
 Employee.config.paid_leave = 5
 
@@ -31,4 +31,4 @@ employee.config.paid_leave = 3
 
 # Now check the value at the class level
 Employee.config.paid_leave # => 3
-{{ end highlight }}
+{% endhighlight %}
