@@ -7,7 +7,7 @@ type: page
 published: true
 ---
 
-He is a 5 years experience rails developer, currently work at <a title="The Plant home page" href="http://theplant.jp" target="_blank">The Plant</a> , He addresses to provide best solution for rails web application, from server side to client side, but most interested part is making opensource component for rails or ruby.
+He is a 5 years experience rails developer, currently work at <a title="SkillUp Japan R&D Department" href="http://skillupjapan.co.jp" target="_blank">SkillUp Japan R&D Department</a> which is located at Shibuya tokyo (東京渋谷), and he addresses to provide best solution for rails web application, from server side to client side, but most interested part is making opensource component for rails or ruby. He is also a mobile developer mostly focus on iOS development.
 
 Main developer and manager of <a href="http://itjob.fm" target="_blank">ITJob.fm</a>.
 
